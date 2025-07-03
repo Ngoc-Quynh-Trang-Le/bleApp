@@ -72,6 +72,7 @@ The app uses native BLE libraries and must be built with **React Native CLI** (n
 ### Required Packages
 
 ```bash
+npm install react-native react-native-cli
 npm install react-native-ble-plx react-native-permissions
 npx pod-install  # For iOS
 ```
@@ -110,8 +111,33 @@ npm install
 ### 2. Start the App
 
 ```bash
+cd COS10025_BLEtoWebSystem/bleToWebApp
 npx react-native run-android
 ```
+
+### 3. Troubleshooting
+
+If you encounter issues while running the app, consider the following steps:
+
+1. **Check Dependencies**: Ensure all required packages are installed and up-to-date.
+2. **Clear Cache**: Sometimes, clearing the cache can resolve unexpected behavior:
+   ```bash
+   cd COS10025_BLEtoWebSystem/bleToWebApp
+   npx react-native start --reset-cache
+   ```
+3. **Rebuild the App**: If you make changes to native code or dependencies, you may need to clean and rebuild the app:
+   ```bash
+   cd COS10025_BLEtoWebSystem/bleToWebApp
+   cd android && ./gradlew clean && cd ..
+   npx react-native run-android
+   ```
+4. **AndroidManifest.xml Issues**: If you get manifest parsing errors, run with verbose logging:
+   ```bash
+   npx react-native run-android --verbose
+   # Or check the specific manifest processing:
+   cd android && ./gradlew app:processDebugMainManifest --stacktrace --info
+   ```
+5. **BLE Permissions**: Ensure your AndroidManifest.xml includes all required BLE permissions for scanning and location access.
 
 ---
 
@@ -126,6 +152,8 @@ npx react-native run-android
 ### 2. Start the App
 
 ```bash
+cd COS10025_BLEtoWebSystem/bleToWebApp
+npx pod-install ios  # Install iOS dependencies
 npx react-native run-ios
 ```
 
