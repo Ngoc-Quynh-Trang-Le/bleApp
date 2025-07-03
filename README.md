@@ -90,7 +90,7 @@ npm install react-native-paper
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Ngoc-Quynh-Trang-Le/COS10025_BLEtoWebSystem.git
+git clone https://github.com/Ngoc-Quynh-Trang-Le/bleApp.git
 ```
 
 ### 2. Install Dependencies
