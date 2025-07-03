@@ -9,15 +9,27 @@ export const bleManager = new BleManager();
  */
 export async function requestPermissions(): Promise<void> {
   if (Platform.OS === 'android') {
-    try {
-      await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
-      ]);
-    } catch (error) {
-      console.error('Failed to request permissions:', error);
-    }
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        try {
+          const permissions = [
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          ];
+          // Only request these on Android 12+ (API 31+)
+          if (Number(Platform.Version) >= 31) {
+            permissions.push(
+              PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+              PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT
+            );
+          }
+          await PermissionsAndroid.requestMultiple(permissions);
+          resolve();
+        } catch (error) {
+          console.error('Failed to request permissions:', error);
+          reject(error);
+        }
+      }, 300); // Delay to ensure Activity is attached
+    });
   }
 }
 

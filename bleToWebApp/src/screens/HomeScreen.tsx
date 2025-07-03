@@ -19,18 +19,16 @@ export default function HomeScreen() {
     }
   }, []);
 
-  // Set up BLE scanning
+  // Set up BLE scanning after permissions are granted
   useEffect(() => {
-    const setupBLE = async () => {
+    let stopScan: (() => void) | undefined;
+
+    const setup = async () => {
       await requestPermissions();
-      return scanForBeacons(handleDeviceFound);
+      stopScan = scanForBeacons(handleDeviceFound);
     };
 
-    // Start scanning and get cleanup function
-    let stopScan: (() => void) | undefined;
-    setupBLE().then(cleanupFn => {
-      stopScan = cleanupFn;
-    });
+    setup();
 
     // Clean up on component unmount
     return () => {
