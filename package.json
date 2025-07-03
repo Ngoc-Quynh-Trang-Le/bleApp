@@ -2,5 +2,8 @@
   "dependencies": {
     "react-native-ble-plx": "^3.5.0",
     "react-native-permissions": "^5.4.1"
+  },
+  "devDependencies": {
+    "@react-native/typescript-config": "^0.80.1"
   }
 }
