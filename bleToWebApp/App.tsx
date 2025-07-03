@@ -1,28 +1,11 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
+ * BLE-to-Web Cultural Storytelling App
+ * Entry point for the Cham Museum app
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import React from 'react';
+import HomeScreen from './src/screens/HomeScreen';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
-    </View>
-  );
+export default function App() {
+  return <HomeScreen />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;

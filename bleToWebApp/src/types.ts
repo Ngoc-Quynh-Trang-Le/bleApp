@@ -1,5 +1,17 @@
-export type BeaconInfo = {
+/**
+ * Type definitions for the BLE-to-Web app
+ */
+
+export interface BeaconInfo {
+  id: string;
   name: string;
-  lastSeen: Date;
-};
-export type BeaconMap = Record<string, BeaconInfo>;
+  rssi?: number;
+  distance?: number;
+}
+
+export interface ArtifactStory {
+  beaconName: string;
+  url: string;
+  title: string;
+  description?: string;
+}

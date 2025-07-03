@@ -1,19 +1,35 @@
-const cooldowns: Record<string, Date> = {};
-const COOLDOWN_MS = 30000; // 30 seconds cooldown
+/**
+ * Manages cooldown periods to prevent spam-opening of URLs
+ */
+
+const COOLDOWN_DURATION_MS = 30000; // 30 seconds
+const lastTriggered: Record<string, number> = {}
 
 /**
- * Checks if a device can trigger an action based on cooldown period
- * @param deviceName The name of the BLE device/beacon
- * @returns true if enough time has passed since last trigger
+ * Check if a beacon can trigger URL opening (not in cooldown)
  */
-export function canTrigger(deviceName: string): boolean {
-  const now = new Date();
-  const lastTime = cooldowns[deviceName];
+export function canTrigger(beaconName: string): boolean {
+  const now = Date.now();
+  const lastTime = lastTriggered[beaconName] || 0;
   
-  if (!lastTime || now.getTime() - lastTime.getTime() > COOLDOWN_MS) {
-    cooldowns[deviceName] = now;
+  if (now - lastTime >= COOLDOWN_DURATION_MS) {
+    lastTriggered[beaconName] = now;
     return true;
   }
   
   return false;
+}
+
+/**
+ * Reset cooldown for a specific beacon (for testing)
+ */
+export function resetCooldown(beaconName: string): void {
+  delete lastTriggered[beaconName];
+}
+
+/**
+ * Reset all cooldowns (for testing)
+ */
+export function resetAllCooldowns(): void {
+  Object.keys(lastTriggered).forEach(key => delete lastTriggered[key]);
 }
