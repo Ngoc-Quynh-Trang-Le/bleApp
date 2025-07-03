@@ -1,4 +1,3 @@
-// src/logic/beaconMap.ts
 /**
  * Maps beacon names to their corresponding URLs
  * Update this when adding new artifacts to the museum

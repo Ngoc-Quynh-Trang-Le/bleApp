@@ -1,4 +1,3 @@
-// src/logic/cooldownManager.ts
 const cooldowns: Record<string, Date> = {};
 const COOLDOWN_MS = 30000; // 30 seconds cooldown
 
