@@ -1,5 +1,5 @@
 /**
- * BLE-to-Web Cultural Storytelling App
+ * Cham Journey Cultural Storytelling App
  * Entry point for the Cham Museum app
  */
 

@@ -3,12 +3,10 @@
  */
 
 export const beaconToUrl: Record<string, string> = {
-  // "TraKieu_Apsara_Relief": "https://mercury.swin.edu.au/cos10025/project-group1/TraKieu_Apsara_Relief.html",
-  // "Tara_Bodhisattva_Statue": "https://mercury.swin.edu.au/cos10025/project-group1/Tara_Bodhisattva_Statue.html",
-  "TraKieu_Apsara_Relief": "https://google.com", // for testing
-  "Tara_Bodhisattva_Statue": "https://youtube.com", // for testing
-  "Cham_Dancing_Shiva": "https://mercury.swin.edu.au/cos10025/project-group1/Cham_Dancing_Shiva.html",
-  "Ancient_Cham_Tower": "https://mercury.swin.edu.au/cos10025/project-group1/Ancient_Cham_Tower.html"
+  "TraKieu_Apsara_Relief": "https://namhung276.github.io/Indigenous_Cipheria/Vu_Nu_Apsara.html",
+  "Tara_Bodhisattva_Statue": "https://namhung276.github.io/Indigenous_Cipheria/Bo_Tat_Tara.html",
+  //"Cham_Dancing_Shiva": "https://namhung276.github.io/Indigenous_Cipheria/Cham_Dancing_Shiva.html",
+  //"Ancient_Cham_Tower": "https://namhung276.github.io/Indigenous_Cipheria/Ancient_Cham_Tower.html"
 };
 
 /**
