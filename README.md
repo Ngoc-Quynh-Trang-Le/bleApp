@@ -115,7 +115,17 @@ cd COS10025_BLEtoWebSystem/bleToWebApp
 npx react-native run-android
 ```
 
-### 3. Troubleshooting
+### 3. Installing the APK
+
+After building the app, you can install the APK on your Android device using the following command:
+
+```bash
+cd bleApp/bleToWebApp/android
+./gradlew assembleRelease  # Build the release APK
+adb install -r android/app/build/outputs/apk/release/app-release.apk
+```
+
+### 4. Troubleshooting
 
 If you encounter issues while running the app, consider the following steps:
 
@@ -236,3 +246,88 @@ export const beaconToUrl: Record<string, string> = {
 - Fallback UI is optional, minimal, and only shown when essential
 
 ---
+
+## Configure the App Display Name
+To change the app name:
+
+update the `app.json` file in the root directory of your project to include the new app name:
+
+```json
+{
+  "name": "ChamJourney",
+  "displayName": "Cham Journey"
+}
+```
+
+Update the `package.json` file in the root directory of your project to include the new app name:
+
+```json
+{
+  "name": "cham-journey",
+  "version": "0.0.1",
+  "description": "A BLE-to-Web cultural storytelling app for Da Nang Museum of Cham Sculpture"
+}
+```
+
+### For Android:
+- Edit the `android/app/src/main/res/values/strings.xml` file. Here's an example of how to set the app name:
+
+```xml
+<resources>
+    <string name="app_name">Cham Journey</string>
+</resources>
+```
+
+- Then, update the `android/app/src/main/java/com/chamjourney/MainActivity.kt` file to reflect the new app name:
+
+```kotlin
+package com.chamjourney
+
+import com.facebook.react.ReactActivity
+
+class MainActivity: ReactActivity() {
+    override fun getMainComponentName(): String? {
+        return "Cham Journey"
+    }
+}
+```
+
+- Finally, update the `android/app/src/main/res/values/local.properties` file to include the new app name:
+
+```properties
+app.name=Cham Journey
+```
+
+### For iOS:
+- Edit the `ios/ChamJourney/Info.plist` file. Here's an example of how to set the app name:
+
+```xml
+<key>CFBundleName</key>
+<string>Cham Journey</string>
+```
+- Update the `ios/ChamJourney/AppDelegate.m` file to reflect the new app name:
+
+```objc
+#import "AppDelegate.h"
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:[[RCTBundleURLProvider sharedSettings] jsBundleURLForFallbackResource:@"index" withExtension:@"jsbundle"]
+                                                    initialProperties:nil
+                                                        launchOptions:launchOptions];
+  rootView.backgroundColor = [UIColor whiteColor];
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  UIViewController *rootViewController = [[UIViewController alloc] init];
+  rootViewController.view = rootView;
+  self.window.rootViewController = rootViewController;
+  [self.window makeKeyAndVisible];
+  return YES;
+}
+
+@end
+```
+
+- After making these changes, rebuild the app to apply the new name.
