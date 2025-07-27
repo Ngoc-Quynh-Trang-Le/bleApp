@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import { Device } from 'react-native-ble-plx';
+// import { Device } from 'react-native-ble-plx';
+import { requestPermissions, scanForBeacons, initializeBleManager } from '../logic/bleManager';
 
-import { requestPermissions, scanForBeacons } from '../logic/bleManager';
+// import { requestPermissions, scanForBeacons } from '../logic/bleManager';
 import { beaconToUrl, getFormattedBeaconName } from '../logic/beaconMap';
 import { canTrigger } from '../logic/cooldownManager';
 import { launchArtifactUrl } from '../logic/urlLauncher';
@@ -12,9 +13,9 @@ export default function HomeScreen() {
   const [nearbyBeacons, setNearbyBeacons] = useState<Set<string>>(new Set());
 
   // Handle when a new beacon is discovered
-  const handleDeviceFound = useCallback((device: Device) => {
-    const name = device.name!;
-    if (beaconToUrl[name] && canTrigger(name)) {
+  const handleDeviceFound = useCallback((device: { id: string; name?: string }) => {
+    const name = device.name;
+    if (name && beaconToUrl[name] && canTrigger(name)) {
       setNearbyBeacons(prev => new Set(prev).add(name));
     }
   }, []);
@@ -24,6 +25,7 @@ export default function HomeScreen() {
     let stopScan: (() => void) | undefined;
 
     const setup = async () => {
+      await initializeBleManager();
       await requestPermissions();
       stopScan = scanForBeacons(handleDeviceFound);
     };

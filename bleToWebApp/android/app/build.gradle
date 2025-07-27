@@ -73,17 +73,42 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 android {
-    ndkVersion rootProject.ext.ndkVersion
+    ndkVersion = rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.chamjourney"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    // Suppress Java warnings globally
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:none"
+    }
     defaultConfig {
         applicationId "com.chamjourney"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        // Workaround: force default linker to avoid -fuse-ld=gold issues
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_LD=lld", "-DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=lld", "-DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=lld", "-DCMAKE_MODULE_LINKER_FLAGS=-fuse-ld=lld", "-DANDROID_STL=c++_shared"
+                cFlags.addAll(["-fuse-ld=lld"])
+                cppFlags.addAll(["-fuse-ld=lld", "-std=c++17"])
+            }
+        }
+        // We don't need to set NDK options here since they're set in the splits section
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a'
+            universalApk false
+        }
     }
     signingConfigs {
         debug {

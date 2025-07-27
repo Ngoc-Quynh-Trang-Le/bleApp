@@ -1,8 +1,15 @@
-import { BleManager, Device, ScanMode } from 'react-native-ble-plx';
-import { Platform } from 'react-native';
-import { PermissionsAndroid } from 'react-native';
+import BleManager from 'react-native-ble-manager';
+import { NativeEventEmitter, NativeModules, Platform, PermissionsAndroid, DeviceEventEmitter } from 'react-native';
+const bleManagerEmitter = new NativeEventEmitter(NativeModules.BleManager);
 
-export const bleManager = new BleManager();
+let bleInitialized = false;
+
+export async function initializeBleManager(): Promise<void> {
+  if (!bleInitialized) {
+    await BleManager.start({ showAlert: false });
+    bleInitialized = true;
+  }
+}
 
 /**
  * Request necessary permissions for BLE scanning
@@ -39,26 +46,22 @@ export async function requestPermissions(): Promise<void> {
  * @returns Function to stop scanning
  */
 export function scanForBeacons(
-  onDeviceFound: (device: Device) => void
+  onDeviceFound: (device: { id: string; name?: string }) => void
 ): () => void {
+  let scanListener: any;
   try {
-    bleManager.startDeviceScan(
-      null, // no filter UUIDs
-      { scanMode: ScanMode.LowLatency },
-      (error, device) => {
-        if (error) {
-          console.warn("BLE scan error:", error);
-          return;
-        }
-        if (device?.name) {
-          onDeviceFound(device);
-        }
+    BleManager.scan([], 5, true);
+    scanListener = DeviceEventEmitter.addListener('BleManagerDiscoverPeripheral', (device) => {
+      if (device && device.name) {
+        onDeviceFound(device);
       }
-    );
+    });
   } catch (error) {
-    console.error("Failed to start BLE scan:", error);
+    console.error('Failed to start BLE scan:', error);
   }
-
   // Return cleanup function
-  return () => bleManager.stopDeviceScan();
+  return () => {
+    BleManager.stopScan();
+    if (scanListener) scanListener.remove();
+  };
 }
