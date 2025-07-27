@@ -1,4 +1,4 @@
-package com.bletowebapp
+package com.chamjourney
 
 import android.app.Application
 import com.facebook.react.PackageList

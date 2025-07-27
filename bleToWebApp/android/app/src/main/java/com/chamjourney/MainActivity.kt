@@ -1,4 +1,4 @@
-package com.bletowebapp
+package com.chamjourney
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
